@@ -6,7 +6,7 @@ import java.util.List;
 public class Day03 {
     public static void main(String[] args) {
         FileReaderClass fileReaderClass = new FileReaderClass();
-        List<String> list =  fileReaderClass.readFileInList("AdventOfCode\\src\\txt_2021\\03ex.txt");
+        List<String> list =  fileReaderClass.readFileInList("AdventOfCode\\src\\txt_2021\\03.txt");
         System.out.println(list);
         int length = list.size();
         int lengthOfWord = list.get(0).length();
