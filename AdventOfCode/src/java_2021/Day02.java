@@ -63,7 +63,7 @@ public class Day02 {
             }
         }
         System.out.println(submarine.getHorizontal()* submarine.getDepth());
-        
+
         /*part 1
         Submarine submarine = new Submarine(0,0);
 
