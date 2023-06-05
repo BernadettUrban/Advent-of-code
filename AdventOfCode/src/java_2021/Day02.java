@@ -11,9 +11,20 @@ class Submarine{
     private int horizontal;
     private int depth;
 
-    public Submarine(int horizontal, int depth) {
+    private int aim;
+
+    public Submarine(int horizontal, int depth, int aim) {
         this.horizontal = horizontal;
         this.depth = depth;
+        this.aim = aim;
+    }
+
+    public int getAim() {
+        return aim;
+    }
+
+    public void setAim(int aim) {
+        this.aim = aim;
     }
 
     public int getHorizontal() {
@@ -35,8 +46,27 @@ class Submarine{
 public class Day02 {
     public static void main(String[] args) {
         List<String> lines = readFileInList("AdventOfCode\\src\\txt_2021\\02.txt");
-       
+
+        Submarine submarine = new Submarine(0,0,0);
+        for (String s: lines){
+            String [] split = s.split(" ");
+            String command = split[0];
+            int number = Integer.valueOf(split[1]);
+            if(command.equals("down")){
+                submarine.setAim(submarine.getAim()+number);
+            }else if(command.equals("up")){
+                submarine.setAim(submarine.getAim()-number);
+            }else if(command.equals("forward")){
+                submarine.setHorizontal(submarine.getHorizontal()+number);
+                //It increases your depth by your aim multiplied by X.
+                submarine.setDepth(submarine.getDepth()+submarine.getAim()*number);
+            }
+        }
+        System.out.println(submarine.getHorizontal()* submarine.getDepth());
+        
+        /*part 1
         Submarine submarine = new Submarine(0,0);
+
         for (String s: lines){
             String [] split = s.split(" ");
             String command = split[0];
@@ -50,6 +80,9 @@ public class Day02 {
             }
         }
         System.out.println(submarine.getHorizontal()* submarine.getDepth());
+
+         */
+
     }
 
     public static List<String> readFileInList(String fileName) {
