@@ -15,7 +15,7 @@ public class Day01 {
         for (String s : lines) {
             depths.add(Integer.valueOf(s));
         }
-
+    /**part 1
         int counter = 0;
         for (int i = 0; i < depths.size() - 1; i++) {
             if (depths.get(i) < depths.get(i + 1)) {
@@ -23,6 +23,23 @@ public class Day01 {
             }
         }
         System.out.println(counter);
+    **/
+        int windowSum = 0;
+        int count = 0;
+        int k = 3;
+
+        for(int i=0;i<k;i++){
+            windowSum+= depths.get(i);
+        }
+
+        for(int i=k;i< depths.size();i++){
+            var sum = windowSum + depths.get(i)- depths.get(i-k);
+            if (sum > windowSum) {
+                count++;
+            }
+            windowSum = sum;
+        }
+        System.out.println(count);
 
     }
 
