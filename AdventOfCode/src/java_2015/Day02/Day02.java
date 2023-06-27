@@ -9,7 +9,7 @@ public class Day02 {
         FileReader fileReader = new FileReader();
         List<String> lines = fileReader.readFileInList("");
         int area = 0;
-
+        int volume = 0;
         for (int i = 0; i < lines.size(); i++) {
             int currentArea = 0;
             String[] dimensions = lines.get(i).split("x");
@@ -21,13 +21,25 @@ public class Day02 {
             int sideOne = l * w;
             int sideTwo = w * h;
             int sideThree = h * l;
-            int min = Math.min(Math.min(sideOne, sideTwo), sideThree);
+            int minArea = Math.min(Math.min(sideOne, sideTwo), sideThree);
 
-            currentArea = 2 * sideOne + 2 * sideTwo + 2 * sideThree + min;
+
+            currentArea = 2 * sideOne + 2 * sideTwo + 2 * sideThree + minArea;
 
             area += currentArea;
 
+
+            int perimeter1 = 2 * (l + w);
+            int perimeter2 = 2 * (w + h);
+            int perimeter3 = 2 * (h +l);
+            int smallestPerimeter = Math.min(Math.min(perimeter1, perimeter2), perimeter3);
+
+            int currentVolume = l * w * h;
+
+            volume+=smallestPerimeter + currentVolume;
+
         }
         System.out.println(area);
+        System.out.println(volume);
     }
 }
