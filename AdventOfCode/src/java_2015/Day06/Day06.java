@@ -3,10 +3,9 @@ package java_2015.Day06;
 import java_2015.FileReader;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-class Instruction{
+class Instruction {
     private String action;
     private int startX;
     private int startY;
@@ -75,9 +74,16 @@ class Instruction{
                 '}';
     }
 }
+
 class Light {
 
     private boolean state;
+    private int brightness;
+
+    public Light(boolean state, int brightness) {
+        this.state = state;
+        this.brightness = brightness;
+    }
 
     public Light(boolean state) {
         this.state = state;
@@ -88,23 +94,28 @@ class Light {
     }
 
 
-
     public boolean getState() {
         return state;
     }
-
 
 
     public void setState(boolean state) {
         this.state = state;
     }
 
-    @Override
-    public String toString() {
-        return "Light{" +
-                ", state=" + state +
-                '}';
+    public int getBrightness() {
+        return brightness;
     }
+
+    public void setBrightness(int brightness) {
+        if (brightness >= 0) {
+            this.brightness = brightness;
+        } else {
+            this.brightness = 0;
+        }
+
+    }
+
 }
 
 public class Day06 {
@@ -114,30 +125,30 @@ public class Day06 {
 
 
         int countLightsOn = 0;
-        List<Instruction>instructions = new ArrayList<>();
+        List<Instruction> instructions = new ArrayList<>();
 
         // create initial grid with lights turned off
         Light[][] lights = new Light[1000][1000];
 
         for (int m = 0; m < lights.length; m++) {
             for (int j = 0; j < lights.length; j++) {
-                lights[m][j] = new Light(false);
+                lights[m][j] = new Light(false, 0);
             }
         }
 
         // create instructions list from lines read in from file
-        for(int i = 0; i < lines.size(); i++) {
-        String current = lines.get(i);
+        for (int i = 0; i < lines.size(); i++) {
+            String current = lines.get(i);
 
-        // split line and set the properties of the current instruction
+            // split line and set the properties of the current instruction
             String[] split = current.split(" ");
             Instruction instruction = new Instruction();
 
-            if(split[0].equals("turn") && split[1].equals("on")){
+            if (split[0].equals("turn") && split[1].equals("on")) {
                 instruction.setAction("turn on");
-            }else if(split[0].equals("turn") && split[1].equals("off")){
+            } else if (split[0].equals("turn") && split[1].equals("off")) {
                 instruction.setAction("turn off");
-            }else if(split[0].equals("toggle")){
+            } else if (split[0].equals("toggle")) {
                 instruction.setAction("toggle");
             }
             String[] startIndexes = new String[2];
@@ -161,22 +172,26 @@ public class Day06 {
 
         // iterate over instructions and iterate over the grid, set the state of the lights according to the instructions
         for (int i = 0; i < instructions.size(); i++) {
-            
+
             int startY = instructions.get(i).getStartY();
-            int endY= instructions.get(i).getEndY();
+            int endY = instructions.get(i).getEndY();
             int startX = instructions.get(i).getStartX();
             int endX = instructions.get(i).getEndX();
             for (int j = startX; j <= endX; j++) {
                 for (int k = startY; k <= endY; k++) {
-                    if(instructions.get(i).getAction().equals("turn on")){
+                    if (instructions.get(i).getAction().equals("turn on")) {
                         lights[j][k].setState(true);
-                    }else if(instructions.get(i).getAction().equals("turn off")){
+                        lights[j][k].setBrightness(lights[j][k].getBrightness() + 1);
+                    } else if (instructions.get(i).getAction().equals("turn off")) {
                         lights[j][k].setState(false);
-                    }else if(instructions.get(i).getAction().equals("toggle")){
-                        if(lights[j][k].getState()==true){
+                        lights[j][k].setBrightness(lights[j][k].getBrightness() - 1);
+                    } else if (instructions.get(i).getAction().equals("toggle")) {
+                        if (lights[j][k].getState()) {
                             lights[j][k].setState(false);
-                        }else if(lights[j][k].getState()==false){
+                            lights[j][k].setBrightness(lights[j][k].getBrightness() + 2);
+                        } else if (!lights[j][k].getState()) {
                             lights[j][k].setState(true);
+                            lights[j][k].setBrightness(lights[j][k].getBrightness() + 2);
                         }
                     }
                 }
@@ -185,42 +200,45 @@ public class Day06 {
 
         }
 
-
-//iterate over the frid and count the light switched on
+        int sumBrightness = 0;
+        //iterate over the frid and count the light switched on and count brightness
         for (int m = 0; m < lights.length; m++) {
             for (int j = 0; j < lights.length; j++) {
-                if(lights[m][j].getState()==true){
+                sumBrightness += lights[m][j].getBrightness();
+                if (lights[m][j].getState()) {
                     countLightsOn++;
                 }
             }
         }
 
         System.out.println(countLightsOn);
+        System.out.println(sumBrightness);
 
     }
 
 
-    public static String [] startIndexes(String[] split){
+    public static String[] startIndexes(String[] split) {
         String[] startIndexes = new String[2];
 
-        if(split[0].equals("toggle")){
+        if (split[0].equals("toggle")) {
             startIndexes = split[1].split(",");
 
 
-        }else {
+        } else {
             startIndexes = split[2].split(",");
 
         }
         return startIndexes;
     }
-    public static String [] endIndexes(String[] split){
+
+    public static String[] endIndexes(String[] split) {
         String[] endIndexes = new String[2];
 
-        if(split[0].equals("toggle")){
+        if (split[0].equals("toggle")) {
 
             endIndexes = split[3].split(",");
 
-        }else {
+        } else {
 
             endIndexes = split[4].split(",");
         }
