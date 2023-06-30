@@ -76,13 +76,10 @@ class Instruction{
     }
 }
 class Light {
-    private int x;
-    private int y;
+
     private boolean state;
 
-    public Light(int x, int y, boolean state) {
-        this.x = x;
-        this.y = y;
+    public Light(boolean state) {
         this.state = state;
     }
 
@@ -90,25 +87,13 @@ class Light {
 
     }
 
-    public int getX() {
-        return x;
-    }
 
-    public int getY() {
-        return y;
-    }
 
     public boolean getState() {
         return state;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
 
-    public void setY(int y) {
-        this.y = y;
-    }
 
     public void setState(boolean state) {
         this.state = state;
@@ -117,8 +102,6 @@ class Light {
     @Override
     public String toString() {
         return "Light{" +
-                "x=" + x +
-                ", y=" + y +
                 ", state=" + state +
                 '}';
     }
@@ -132,24 +115,21 @@ public class Day06 {
 
         int countLightsOn = 0;
         List<Instruction>instructions = new ArrayList<>();
+
+        // create initial grid with lights turned off
         Light[][] lights = new Light[1000][1000];
 
         for (int m = 0; m < lights.length; m++) {
             for (int j = 0; j < lights.length; j++) {
-                lights[m][j] = new Light(m, j, false);
+                lights[m][j] = new Light(false);
             }
         }
 
-
+        // create instructions list from lines read in from file
         for(int i = 0; i < lines.size(); i++) {
+        String current = lines.get(i);
 
-
-            String current =
-                    //"turn on 0,0 through 2,2";
-                    lines.get(i);
-                    //"turn off 499,499 through 500,500";
-                    //
-            //System.out.println(current);
+        // split line and set the properties of the current instruction
             String[] split = current.split(" ");
             Instruction instruction = new Instruction();
 
@@ -175,14 +155,13 @@ public class Day06 {
             instruction.setStartY(startY);
             instruction.setEndY(endY);
 
-
             instructions.add(instruction);
-            
         }
 
 
+        // iterate over instructions and iterate over the grid, set the state of the lights according to the instructions
         for (int i = 0; i < instructions.size(); i++) {
-            System.out.println(instructions.get(i));
+            
             int startY = instructions.get(i).getStartY();
             int endY= instructions.get(i).getEndY();
             int startX = instructions.get(i).getStartX();
@@ -190,19 +169,14 @@ public class Day06 {
             for (int j = startX; j <= endX; j++) {
                 for (int k = startY; k <= endY; k++) {
                     if(instructions.get(i).getAction().equals("turn on")){
-                            //split[0].equals("turn") && split[1].equals("on")){
                         lights[j][k].setState(true);
-                        //countLightsOn++;
                     }else if(instructions.get(i).getAction().equals("turn off")){
                         lights[j][k].setState(false);
-                        //countLightsOn--;
                     }else if(instructions.get(i).getAction().equals("toggle")){
-                        if(lights[j][j].getState()==true){
+                        if(lights[j][k].getState()==true){
                             lights[j][k].setState(false);
-                            // countLightsOn--;
-                        }else if(lights[j][j].getState()==false){
+                        }else if(lights[j][k].getState()==false){
                             lights[j][k].setState(true);
-                            //countLightsOn++;
                         }
                     }
                 }
@@ -212,25 +186,17 @@ public class Day06 {
         }
 
 
-
+//iterate over the frid and count the light switched on
         for (int m = 0; m < lights.length; m++) {
             for (int j = 0; j < lights.length; j++) {
                 if(lights[m][j].getState()==true){
                     countLightsOn++;
                 }
-                //System.out.println(lights[m][j]);
-
             }
-            //System.out.println();
         }
 
         System.out.println(countLightsOn);
-        // 4805659 too high
-        //13822818 too high :(
-        //13822818
-        //17808995
-        //13693344
-        //534742 //is too low 534742 //531297 //435509 //435509 504118 513409
+
     }
 
 
