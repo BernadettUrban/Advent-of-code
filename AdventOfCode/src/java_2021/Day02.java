@@ -3,6 +3,7 @@ package java_2021;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
@@ -45,7 +46,12 @@ class Submarine{
 }
 public class Day02 {
     public static void main(String[] args) {
-        List<String> lines = readFileInList("AdventOfCode\\src\\txt_2021\\02.txt");
+        FileReaderClass fileReaderClass = new FileReaderClass();
+        String filename="02.txt";
+        Path pathToFile = Paths.get(filename);
+        System.out.println(pathToFile.toAbsolutePath());
+        List<String> lines = fileReaderClass.readFileWithScanner("C:\\Users\\Lenovo Ideapad\\Desktop\\Huli\\Advent-of-code\\AdventOfCode\\src\\02.txt");
+                //readFileInList("C:\\Users\\Lenovo Ideapad\\Desktop\\Huli\\Advent-of-code\\AdventOfCode\\src\\02.txt");
 
         Submarine submarine = new Submarine(0,0,0);
         for (String s: lines){
